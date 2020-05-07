@@ -1,4 +1,4 @@
-function [foundfile] = FileSearch(findfile)
+function [foundfile] = filesearch(findfile)
 %Filesearch - Looks for file based on a prefix
 %             Input: findfile - Prefix for file(string)
 
