@@ -61,7 +61,6 @@ end
 if savedata == 's'
     exportname = split(filename);
     save(['data_' exportname{1} '.mat'],'data')
-    data = {};
 end 
 end
 
