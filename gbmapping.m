@@ -1,6 +1,7 @@
 function [ output_args ] = gbmapping(start_file, Bstart, delB, Bfinal)
 %UNTITLED2 Summary of this function goes here
 %   Detailed explanation goes here
+
 i = start_file; 
 counter = 0; 
 numfiles = abs((Bfinal - Bstart))./abs(delB)+1; 
@@ -63,19 +64,16 @@ hTabs(1) = uitab('Parent',hTabGroup, 'Title','Gate, B, R');
 hTabs(2) = uitab('Parent',hTabGroup, 'Title','Gate, B, log(R)');
 hTabs(3) = uitab('Parent',hTabGroup, 'Title','Gate, B, dR/dV');
 hTabs(4) = uitab('Parent',hTabGroup, 'Title','Gate, B, log(dR/dV)');
-hTabs(5) = uitab('Parent',hTabGroup, 'Title','Raw - 1/B vs R');
-hTabs(6) = uitab('Parent',hTabGroup, 'Title','Background Subtraction - 1/B vs R');
-hTabs(7) = uitab('Parent',hTabGroup, 'Title','Derivative - 1/B vs R');
-hTabs(8) = uitab('Parent',hTabGroup, 'Title','Background Subtraction + Derivative - 1/B vs R');
+
 
 set(hTabGroup, 'SelectedTab',hTabs(1));
 
         hAx = axes('Parent',hTabs(1));
         %Gate vs R
-        subplot(2,2,1)
+        subplot(1,3,1)
         map = pcolor(gate,Bf, r);
-        set(map,'EdgeColor','none')
-        shading interp;
+        %set(map,'EdgeColor','none')
+        %shading interp;
         colorbar;
         xlabel('Gate (V)') 
         ylabel('B (T)')
@@ -84,7 +82,7 @@ set(hTabGroup, 'SelectedTab',hTabs(1));
         pbaspect([1 1 1])
         
        
-        subplot(2,2,3)
+        subplot(1,3,2)
         map = pcolor(gate,Bf, r2);
         set(map,'EdgeColor','none')
         shading interp;
@@ -94,7 +92,8 @@ set(hTabGroup, 'SelectedTab',hTabs(1));
         zlabel('R (k\Ohm)')
         title('R1')
         pbaspect([1 1 1])
-        subplot(2,2,4)
+        
+        subplot(1,3,3)
         map = pcolor(gate,Bf, r3);
         set(map,'EdgeColor','none')
         shading interp;
@@ -106,8 +105,9 @@ set(hTabGroup, 'SelectedTab',hTabs(1));
         pbaspect([1 1 1])
 
         hAx = axes('Parent',hTabs(2));
+        
         %Gate vs Log(R)
-        subplot(2,2,1)
+        subplot(1,3,1)
         map = pcolor(gate,Bf, log(r));
         set(map,'EdgeColor','none')
         shading interp;
@@ -118,7 +118,7 @@ set(hTabGroup, 'SelectedTab',hTabs(1));
         title('R')
         pbaspect([1 1 1])
        
-        subplot(2,2,3)
+        subplot(1,3,2)
         map = pcolor(gate,Bf, log(abs((r2))));
         set(map,'EdgeColor','none')
         shading interp;
@@ -128,7 +128,8 @@ set(hTabGroup, 'SelectedTab',hTabs(1));
         zlabel('R (k\Ohm)')
         title('R1')
         pbaspect([1 1 1])
-        subplot(2,2,4)
+        
+        subplot(1,3,3)
         map = pcolor(gate,Bf, log(abs((r2))));
         set(map,'EdgeColor','none')
         shading interp;
@@ -138,10 +139,10 @@ set(hTabGroup, 'SelectedTab',hTabs(1));
         zlabel('R (k\Ohm)')
         title('R2')
         pbaspect([1 1 1]) 
-        %}
+  
          hAx = axes('Parent',hTabs(3));
         %Gate vs d(R)/dV
-        subplot(2,2,1)
+        subplot(1,3,1)
         map = pcolor(gate,Bf, ((drdv)));
         set(map,'EdgeColor','none')
         shading interp;
@@ -153,7 +154,7 @@ set(hTabGroup, 'SelectedTab',hTabs(1));
         pbaspect([1 1 1])
         
         
-        subplot(2,2,3)
+        subplot(1,3,2)
         map = pcolor(gate,Bf, (((dr2dv))));
         set(map,'EdgeColor','none')
         shading interp;
@@ -163,7 +164,8 @@ set(hTabGroup, 'SelectedTab',hTabs(1));
         zlabel('R (k\Ohm)')
         title('R1')
         pbaspect([1 1 1])
-        subplot(2,2,4)
+        
+        subplot(1,3,3)
         map = pcolor(gate,Bf, (((dr3dv))));
         set(map,'EdgeColor','none')
         shading interp;
@@ -176,7 +178,7 @@ set(hTabGroup, 'SelectedTab',hTabs(1));
 
         hAx = axes('Parent',hTabs(4));
         %Gate vs d(R)/dV
-        subplot(2,2,1)
+        subplot(1,3,1)
         map = pcolor(gate,Bf, log(abs(drdv)));
         set(map,'EdgeColor','none')
         shading interp;
@@ -186,7 +188,8 @@ set(hTabGroup, 'SelectedTab',hTabs(1));
         zlabel('R (k\Ohm)')
         title('R')
         pbaspect([1 1 1])
-        subplot(2,2,3)
+        
+        subplot(1,3,2)
         map = pcolor(gate,Bf, log(abs((dr2dv))));
         set(map,'EdgeColor','none')
         shading interp;
@@ -196,7 +199,8 @@ set(hTabGroup, 'SelectedTab',hTabs(1));
         zlabel('R (k\Ohm)')
         title('R1')
         pbaspect([1 1 1])
-        subplot(2,2,4)
+        
+        subplot(1,3,3)
         map = pcolor(gate,Bf, log(abs((dr3dv))));
         set(map,'EdgeColor','none')
         shading interp;
@@ -206,7 +210,6 @@ set(hTabGroup, 'SelectedTab',hTabs(1));
         zlabel('R (k\Ohm)')
         title('R2')
         pbaspect([1 1 1])         
-        
         
     
 end
