@@ -44,6 +44,7 @@ data = {};
 %Extrac primary channel data 
 data.B = dat(:,1)./10000; 
 data.phiphio = data.B.*A./(10.^18.*phio);
+data.phiophi = 1./data.phiphio;
 data.n = con.*(eo./ec).*(er1.*er2)./(d1.*er2 + d2.*er1); 
 
 data.g = dat(:,2)./vsd; 
