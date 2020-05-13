@@ -27,8 +27,8 @@ con = 1./10000; % Nm to meV
 h = 6.62607.*10.^(-34); % Js
 
 %Quantum Flux Calculation 
-phio = h/ec; %Magnetic Flux Quanta
-a = 11;
+phio = h./ec; %Magnetic Flux Quanta
+a = 11; %Moire Size
 A = a.^2*sqrt(3)./2; 
 
 % Data extraction
@@ -43,12 +43,15 @@ data = {};
 
 %Extrac primary channel data 
 data.B = dat(:,1)./10000; 
-%data.n = (dat(:,1)).*con.*(eo./ec).*(er1.*er2)./(d1.*er2 + d2.*er1); 
+data.phiphio = data.B.*A./(10.^18.*phio);
+data.n = con.*(eo./ec).*(er1.*er2)./(d1.*er2 + d2.*er1); 
+
 data.g = dat(:,2)./vsd; 
+data.dgdB = diff([eps; data.g])./diff([eps; data.B]);
+
 data.r = vsd./dat(:,2);
 data.rfit = data.r - polyval(polyfit(data.B,data.r,6),data.B);
-data.drdv = diff([eps; data.r])./diff([eps; data.B]);
-data.dgdv = diff([eps; data.g])./diff([eps; data.B]);
+data.drdB = diff([eps; data.r])./diff([eps; data.B]);
 
 %Extract other channel data
 
@@ -56,16 +59,19 @@ if channels > 2
 
     data.r2 = dat(:,3);
     data.r2fit = data.r2 - polyval(polyfit(data.B,data.r2,6),data.B);
+    data.dr2dB = diff([eps; data.r2])./diff([eps; data.B]);
+    
     data.g2 = 1./data.r2;
-    data.dr2dv = diff([eps; data.r2])./diff([eps; data.B]);
-    data.dg2dv = diff([eps; data.g2])./diff([eps; data.B]); 
+    data.dg2dB = diff([eps; data.g2])./diff([eps; data.B]); 
     
     if channels > 3
+        
         data.r3 = dat(:,4);
         data.r3fit = data.r3 - polyval(polyfit(data.B,data.r3,6),data.B);
+        data.dr3dB = diff([eps; data.r3])./diff([eps; data.B]);
+        
         data.g3 = 1./data.r3;
-        data.dr3dv = diff([eps; data.r3])./diff([eps; data.B]);
-        data.dg3dv = diff([eps; data.g3])./diff([eps; data.B]);
+        data.dg3dB = diff([eps; data.g3])./diff([eps; data.B]);
     end 
 end
 
