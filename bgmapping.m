@@ -24,12 +24,13 @@ for k = [1:1:numfiles]
         load(['data_' filename '.mat']) 
     else
         filename =filesearch(filename);
-        data = btransportdata(filename,0.00005,15,'s'); 
+        data = btransportdata(filename,0.001,30,'s'); 
     end 
     
     len(:,k) = length(data.B);
     
     %counter = 1;
+    i = i;
     i = i + 3;
 end
 
@@ -63,7 +64,7 @@ for k = [1:1:numfiles]
         load(['data_' filename '.mat']) 
     else
         filename =filesearch(filename);
-        data = btransportdata(filename,0.00005,15,'s'); 
+        data = btransportdata(filename,0.001,30,'s'); 
     end 
     
     %Data extraction for plotting
@@ -131,10 +132,9 @@ if savedata == 'ds'
     s = warning('off', 'MATLAB:uitabgroup:OldVersion');
     hTabGroup = uitabgroup('Parent',hFig);
     warning(s);
-    hTabs(1) = uitab('Parent',hTabGroup, 'Title','vgf, B, R');
-    hTabs(2) = uitab('Parent',hTabGroup, 'Title','vgf, B, log(R)');
-    hTabs(3) = uitab('Parent',hTabGroup, 'Title','vgf, B, dR/dV');
-    hTabs(4) = uitab('Parent',hTabGroup, 'Title','vgf, B, log(dR/dV)');
+    hTabs(1) = uitab('Parent',hTabGroup, 'Title','Vg, B, R');
+    hTabs(2) = uitab('Parent',hTabGroup, 'Title','Vg, B, Rfit');
+    hTabs(3) = uitab('Parent',hTabGroup, 'Title','Vg, B, dR/dB');
 
 
     set(hTabGroup, 'SelectedTab',hTabs(1));
@@ -142,36 +142,36 @@ if savedata == 'ds'
             hAx = axes('Parent',hTabs(1));
             %vgf vs R
             subplot(1,3,1)
-            map = pcolor(Vg,B, r);
+            map = pcolor(dat.Vg,dat.B, dat.r);
             set(map,'EdgeColor','none')
             shading interp;
             colorbar;
-            xlabel('vgf (V)') 
+            xlabel('Vg (V)') 
             ylabel('B (T)')
-            zlabel('R (k\Ohm)')
+            zlabel('R (\Ohm)')
             title('R')
             pbaspect([1 1 1])
 
 
             subplot(1,3,2)
-            map = pcolor(Vg,B, r2);
+            map = pcolor(dat.Vg,dat.B, dat.r2);
             set(map,'EdgeColor','none')
             shading interp;
             colorbar;
-            xlabel('vgf (V)') 
+            xlabel('Vg (V)') 
             ylabel('B (T)')
-            zlabel('R (k\Ohm)')
+            zlabel('R1 (\Ohm)')
             title('R1')
             pbaspect([1 1 1])
 
             subplot(1,3,3)
-            map = pcolor(Vg,B, r3);
+            map = pcolor(dat.Vg,dat.B, dat.r3);
             set(map,'EdgeColor','none')
             shading interp;
             colorbar;
-            xlabel('vgf (V)') 
+            xlabel('Vg (V)') 
             ylabel('B (T)')
-            zlabel('R (k\Ohm)')
+            zlabel('R2 (\Ohm)')
             title('R2')
             pbaspect([1 1 1])
 
@@ -179,111 +179,75 @@ if savedata == 'ds'
 
             %vgf vs Log(R)
             subplot(1,3,1)
-            map = pcolor(Vg,1./B, 1./rfit);
+            map = pcolor(dat.Vg,dat.B, dat.rfit);
             set(map,'EdgeColor','none')
             shading interp;
             colorbar;
-            xlabel('vgf (V)') 
+            xlabel('Vg (V)') 
             ylabel('B (T)')
-            zlabel('R (k\Ohm)')
-            title('R')
+            zlabel('Rfit (\Ohm)')
+            title('Rfit')
             pbaspect([1 1 1])
-            ylim([.1 .5])
 
             subplot(1,3,2)
-            map = pcolor(Vg,1./B, 1./r2fit);
+            map = pcolor(dat.Vg,dat.B, dat.r2fit);
             set(map,'EdgeColor','none')
             shading interp;
             colorbar;
-            xlabel('vgf (V)') 
+            xlabel('Vg (V)') 
             ylabel('B (T)')
-            zlabel('R (k\Ohm)')
-            title('R1')
+            zlabel('R1fit (\Ohm)')
+            title('R1fit')
             pbaspect([1 1 1])
-            ylim([.1 .5])
-
+            
             subplot(1,3,3)
-            map = pcolor(Vg,1./B, 1./r3fit);
+            map = pcolor(dat.Vg,dat.B, dat.r3fit);
             set(map,'EdgeColor','none')
             shading interp;
             colorbar;
-            xlabel('vgf (V)') 
+            xlabel('Vg (V)') 
             ylabel('B (T)')
-            zlabel('R (k\Ohm)')
-            title('R2')
+            zlabel('R2fit (\Ohm)')
+            title('R2fit')
             pbaspect([1 1 1]) 
-             ylim([.1 .5])
+
 
              hAx = axes('Parent',hTabs(3));
             %vgf vs d(R)/dV
             subplot(1,3,1)
-            map = pcolor(Vg,B, ((drdB)));
+            map = pcolor(dat.Vg,dat.B, dat.drdB);
             set(map,'EdgeColor','none')
             shading interp;
             colorbar;
-            xlabel('vgf (V)') 
+            xlabel('Vg (V)') 
             ylabel('B (T)')
-            zlabel('R (k\Ohm)')
-            title('R')
+            zlabel('dRdB (\Ohm)')
+            title('dRdB')
             pbaspect([1 1 1])
 
 
             subplot(1,3,2)
-            map = pcolor(Vg,B, (((dr2dB))));
+            map = pcolor(dat.Vg,dat.B, dat.dr2dB);
             set(map,'EdgeColor','none')
             shading interp;
             colorbar;
             xlabel('Vg (V)') 
             ylabel('B (T)')
-            zlabel('R (k\Ohm)')
-            title('R1')
+            zlabel('dR1dB (\Ohm)')
+            title('dR1dB')
             pbaspect([1 1 1])
 
             subplot(1,3,3)
-            map = pcolor(Vg,B, (((dr3dB))));
+            map = pcolor(dat.Vg,dat.B, dat.dr3dB);
             set(map,'EdgeColor','none')
             shading interp;
             colorbar;
             xlabel('Vg (V)') 
             ylabel('B (T)')
-            zlabel('R (k\Ohm)')
-            title('R2')
+            zlabel('dR2dB (\Ohm)')
+            title('dR2dB')
             pbaspect([1 1 1])         
 
-            hAx = axes('Parent',hTabs(4));
-            %Vg vs d(R)/dV
-            subplot(1,3,1)
-            map = pcolor(Vg,B, log(abs(drdB)));
-            set(map,'EdgeColor','none')
-            shading interp;
-            colorbar;
-            xlabel('Vg (V)') 
-            ylabel('B (T)')
-            zlabel('R (k\Ohm)')
-            title('R')
-            pbaspect([1 1 1])
-
-            subplot(1,3,2)
-            map = pcolor(Vg,B, log(abs((dr2dB))));
-            set(map,'EdgeColor','none')
-            shading interp;
-            colorbar;
-            xlabel('Vg (V)') 
-            ylabel('B (T)')
-            zlabel('R (k\Ohm)')
-            title('R1')
-            pbaspect([1 1 1])
-
-            subplot(1,3,3)
-            map = pcolor(Vg,B, log(abs((dr3dB))));
-            set(map,'EdgeColor','none')
-            shading interp;
-            colorbar;
-            xlabel('Vg (V)') 
-            ylabel('B (T)')
-            zlabel('R (k\Ohm)')
-            title('R2')
-            pbaspect([1 1 1])         
 elseif savedata == 's'    
     save(['mappingdata' '.mat'],'dat')
 end 
