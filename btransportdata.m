@@ -1,4 +1,4 @@
-function [ data ] = btransportdata(filename,vsd,do2,savedata)
+function [ data ] = btransportdata(filename,varargin)
 
 %transportdata - Converts text file from Wu Shi's ACDC aquisition program
 %   in a cell-array that contains converted data. This cell array contains
@@ -8,10 +8,24 @@ function [ data ] = btransportdata(filename,vsd,do2,savedata)
 %              - r (ohms): Resistance of channel based on vsd
 %              - g (siemens): Conductance of channel based on vsd 
 
-if ~exist('savedata','var')
-    % third parameter does not exist, so default it to something
-     savedata = 'ds';
-end
+vsd = 0.0005; do2 = 20; savedata = 'ds'; a = 11; w = 1; l = 1;
+
+for j = [1:2:size(varargin,2)]
+    if strcmp(varargin{j},'vsd') == 1
+        vsd = varargin{j+1};
+    elseif strcmp(varargin{j},'bnthickness') == 1 
+        do2 = varargin{j+1};
+    elseif strcmp(varargin{j},'width') == 1 
+        w = varargin{j+1};
+    elseif strcmp(varargin{j},'length') == 1 
+        l = varargin{j+1};
+    elseif strcmp(varargin{j},'savedata') == 1 
+        savedata = varargin{j+1};
+    elseif strcmp(varargin{j},'moire') == 1 
+        a = varargin{j+1};
+    end 
+end 
+
 % Math
 
 % Carrier Density Conversion 
@@ -28,7 +42,7 @@ h = 6.62607.*10.^(-34); % Js
 
 %Quantum Flux Calculation 
 phio = h./ec; %Magnetic Flux Quanta
-a = 11; %Moire Size
+%a = 11; %Moire Size
 A = a.^2*sqrt(3)./2; 
 
 % Data extraction
@@ -48,6 +62,7 @@ data.phiophi = 1./data.phiphio;
 data.n = con.*(eo./ec).*(er1.*er2)./(d1.*er2 + d2.*er1); 
 
 data.g = dat(:,2)./vsd; 
+data.gfit = data.g - polyval(polyfit(data.B,data.g,6),data.B);
 data.dgdB = diff([eps; data.g])./diff([eps; data.B]);
 
 data.r = vsd./dat(:,2);
@@ -63,6 +78,7 @@ if channels > 2
     data.dr2dB = diff([eps; data.r2])./diff([eps; data.B]);
     
     data.g2 = 1./data.r2;
+    data.g2fit = data.g2 - polyval(polyfit(data.B,data.g2,6),data.B);
     data.dg2dB = diff([eps; data.g2])./diff([eps; data.B]); 
     
     if channels > 3
@@ -72,8 +88,12 @@ if channels > 2
         data.dr3dB = diff([eps; data.r3])./diff([eps; data.B]);
         
         data.g3 = 1./data.r3;
+        data.g3fit = data.g3 - polyval(polyfit(data.B,data.g3,6),data.B);
         data.dg3dB = diff([eps; data.g3])./diff([eps; data.B]);
     end 
+    
+data.rho2 = data.r2fit./((data.r2fit.^2) + (w./l).*data.r3fit.^2);
+
 end
 
 % Save data for later use
