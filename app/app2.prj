@@ -36,7 +36,12 @@
     <param.native.matlab>false</param.native.matlab>
     <param.checkbox>false</param.checkbox>
     <param.example />
-    <param.help.text />
+    <param.help.text>Syntax 
+	  -? 
+	 
+ Input Arguments 
+	 -?  print help on how to use the application 
+	 input arguments</param.help.text>
     <unset>
       <param.icon />
       <param.icons />
@@ -73,14 +78,20 @@
       <param.native.matlab />
       <param.checkbox />
       <param.example />
-      <param.help.text />
     </unset>
     <fileset.main>
       <file>${PROJECT_ROOT}\app2.mlapp</file>
     </fileset.main>
     <fileset.resources />
     <fileset.package />
-    <fileset.depfun />
+    <fileset.depfun>
+      <file>C:\Users\kahn\OneDrive\UCB\Research\Programming Repository\Matlab_Lib\bgmapping.m</file>
+      <file>C:\Users\kahn\OneDrive\UCB\Research\Programming Repository\Matlab_Lib\btransportdata.m</file>
+      <file>C:\Users\kahn\OneDrive\UCB\Research\Programming Repository\Matlab_Lib\copyUIAxes.m</file>
+      <file>C:\Users\kahn\OneDrive\UCB\Research\Programming Repository\Matlab_Lib\filesearch.m</file>
+      <file>C:\Users\kahn\OneDrive\UCB\Research\Programming Repository\Matlab_Lib\othercolor\colorData.mat</file>
+      <file>C:\Users\kahn\OneDrive\UCB\Research\Programming Repository\Matlab_Lib\othercolor\othercolor.m</file>
+    </fileset.depfun>
     <build-deliverables>
       <file location="${PROJECT_ROOT}\app2\for_testing" name="app2.exe" optional="false">C:\Users\kahn\OneDrive\UCB\Research\Programming Repository\Matlab_Lib\app\app2\for_testing\app2.exe</file>
       <file location="${PROJECT_ROOT}\app2\for_testing" name="readme.txt" optional="true">C:\Users\kahn\OneDrive\UCB\Research\Programming Repository\Matlab_Lib\app\app2\for_testing\readme.txt</file>
